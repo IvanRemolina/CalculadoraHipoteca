@@ -22,7 +22,7 @@
         <div class="grid">
           <div class="form-group">
             <label for="ahorroActual">Ahorro actual (€)</label>
-            <input type="number" id="ahorroActual" value="30000" min="0" oninput="calcularPlanificacion()">
+            <input type="number" id="ahorroActual" value="29463.45" min="0" step="0.01" oninput="calcularPlanificacion()">
           </div>
           <div class="form-group">
             <label for="ahorroReserva">Ahorro que quieres conservar (€)</label>
@@ -30,7 +30,7 @@
           </div>
           <div class="form-group">
             <label for="porcentajeFinanciacion">Porcentaje a financiar (%)</label>
-            <input type="number" id="porcentajeFinanciacion" value="80" min="1" max="100" step="0.1" oninput="calcularPlanificacion()">
+            <input type="number" id="porcentajeFinanciacion" value="83.3333" min="1" max="100" step="0.0001" oninput="calcularPlanificacion()">
             <label class="checkbox-label"><input type="checkbox" id="financiacionAutomatica" onchange="cambiarModoFinanciacion()"> Calcular porcentaje óptimo automáticamente</label>
           </div>
         </div>
@@ -50,7 +50,7 @@
           </div>
           <div class="form-group">
             <label for="porcentajeEsfuerzo">Porcentaje máximo del sueldo (%)</label>
-            <input type="number" id="porcentajeEsfuerzo" value="33" min="1" max="100" step="0.1" oninput="calcularPlanificacion()">
+            <input type="number" id="porcentajeEsfuerzo" value="32.38" min="1" max="100" step="0.01" oninput="calcularPlanificacion()">
           </div>
         </div>
 
@@ -69,16 +69,36 @@
             <input type="number" id="porcentajeImpuestos" value="6" min="0" step="0.1" oninput="calcularPlanificacion()">
           </div>
           <div class="form-group">
-            <label for="gastosCompra">Notario, registro y gestión (€)</label>
-            <input type="number" id="gastosCompra" value="1996.45" min="0" step="0.01" oninput="calcularPlanificacion()">
+            <label for="gastosNotario">Notario compraventa (€)</label>
+            <input type="number" id="gastosNotario" value="1000" min="0" step="0.01" oninput="calcularPlanificacion()">
           </div>
           <div class="form-group">
-            <label for="gastosHipoteca">Tasación y verificación (€)</label>
-            <input type="number" id="gastosHipoteca" value="267" min="0" step="0.01" oninput="calcularPlanificacion()">
+            <label for="gastosRegistro">Registro compraventa (€)</label>
+            <input type="number" id="gastosRegistro" value="700" min="0" step="0.01" oninput="calcularPlanificacion()">
           </div>
           <div class="form-group">
-            <label for="gastosRecurrentes">Seguros y otros gastos anuales (€)</label>
-            <input type="number" id="gastosRecurrentes" value="345" min="0" step="0.01" oninput="calcularPlanificacion()">
+            <label for="gastosGestion">Gestión compraventa (€)</label>
+            <input type="number" id="gastosGestion" value="296.45" min="0" step="0.01" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="tasacion">Tasación (€)</label>
+            <input type="number" id="tasacion" value="242" min="0" step="0.01" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="verificacion">Verificación registral (€)</label>
+            <input type="number" id="verificacion" value="25" min="0" step="0.01" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="seguroVidaAnual">Seguro de vida anual (€)</label>
+            <input type="number" id="seguroVidaAnual" value="95" min="0" step="0.01" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="seguroHogarAnual">Seguro de hogar anual (€)</label>
+            <input type="number" id="seguroHogarAnual" value="250" min="0" step="0.01" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="otrosGastosAnuales">Otros gastos anuales (€)</label>
+            <input type="number" id="otrosGastosAnuales" value="0" min="0" step="0.01" oninput="calcularPlanificacion()">
           </div>
         </div>
       </div>

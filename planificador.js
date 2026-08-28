@@ -48,13 +48,13 @@ function obtenerPorcentajeFinanciacion() {
 function calcularPrecioMaximo(porcentajeFinanciacion, incluirResultado) {
   const ahorroDisponible = Math.max(0, leerNumero('ahorroActual') - leerNumero('ahorroReserva'));
   const porcentajeImpuestos = Math.max(0, leerNumero('porcentajeImpuestos')) / 100;
-  const gastosFijos = Math.max(0, leerNumero('gastosCompra')) + Math.max(0, leerNumero('gastosHipoteca'));
+  const gastosFijos = leerNumero('gastosNotario') + leerNumero('gastosRegistro') + leerNumero('gastosGestion') + leerNumero('tasacion') + leerNumero('verificacion');
   const salarioMensual = Math.max(0, leerNumero('salarioMensual'));
   const numeroPagas = Math.max(1, leerNumero('numeroPagas'));
   const esfuerzo = Math.max(0, leerNumero('porcentajeEsfuerzo')) / 100;
   const tin = Math.max(0, leerNumero('tinBonificado'));
   const plazoAnos = Math.max(0, leerNumero('plazoAnos'));
-  const recurrentesMensuales = Math.max(0, leerNumero('gastosRecurrentes')) / 12;
+  const recurrentesMensuales = (leerNumero('seguroVidaAnual') + leerNumero('seguroHogarAnual') + leerNumero('otrosGastosAnuales')) / 12;
   const ingresoMensualReal = salarioMensual * numeroPagas / 12;
   const cuotaMaxima = Math.max(0, ingresoMensualReal * esfuerzo - recurrentesMensuales);
   const capitalMaximo = calcularCapitalDesdeCuota(cuotaMaxima, tin, plazoAnos);
@@ -69,14 +69,19 @@ function calcularPrecioMaximo(porcentajeFinanciacion, incluirResultado) {
 function calcularPlanificacion() {
   const porcentajeFinanciacion = obtenerPorcentajeFinanciacion() / 100;
   const porcentajeImpuestos = Math.max(0, leerNumero('porcentajeImpuestos')) / 100;
-  const gastosCompra = Math.max(0, leerNumero('gastosCompra'));
-  const gastosHipoteca = Math.max(0, leerNumero('gastosHipoteca'));
+  const gastosNotario = Math.max(0, leerNumero('gastosNotario'));
+  const gastosRegistro = Math.max(0, leerNumero('gastosRegistro'));
+  const gastosGestion = Math.max(0, leerNumero('gastosGestion'));
+  const tasacion = Math.max(0, leerNumero('tasacion'));
+  const verificacion = Math.max(0, leerNumero('verificacion'));
   const salarioMensual = Math.max(0, leerNumero('salarioMensual'));
   const numeroPagas = Math.max(1, leerNumero('numeroPagas'));
   const porcentajeEsfuerzo = Math.max(0, leerNumero('porcentajeEsfuerzo')) / 100;
   const tin = Math.max(0, leerNumero('tinBonificado'));
   const plazoAnos = Math.max(0, leerNumero('plazoAnos'));
-  const gastosRecurrentesAnuales = Math.max(0, leerNumero('gastosRecurrentes'));
+  const gastosCompra = gastosNotario + gastosRegistro + gastosGestion;
+  const gastosHipoteca = tasacion + verificacion;
+  const gastosRecurrentesAnuales = leerNumero('seguroVidaAnual') + leerNumero('seguroHogarAnual') + leerNumero('otrosGastosAnuales');
 
   const ingresoMensualReal = salarioMensual * numeroPagas / 12;
   const segurosMensuales = gastosRecurrentesAnuales / 12;
@@ -106,13 +111,15 @@ function calcularPlanificacion() {
     precioCompra: precioMaximo.toFixed(2),
     importeHipoteca: hipoteca.toFixed(2),
     porcentajeImpuestos: (porcentajeImpuestos * 100).toFixed(2),
-    gastosNotario: '0',
-    gastosRegistro: '0',
-    gastosGestion: gastosCompra.toFixed(2),
-    tasacion: gastosHipoteca.toFixed(2),
+    gastosNotario: gastosNotario.toFixed(2),
+    gastosRegistro: gastosRegistro.toFixed(2),
+    gastosGestion: gastosGestion.toFixed(2),
+    tasacion: tasacion.toFixed(2),
+    verificacion: verificacion.toFixed(2),
     socio: '0',
-    seguroVidaAnual: '0',
-    seguroHogarAnual: gastosRecurrentesAnuales.toFixed(2),
+    seguroVidaAnual: leerNumero('seguroVidaAnual').toFixed(2),
+    seguroHogarAnual: leerNumero('seguroHogarAnual').toFixed(2),
+    otrosGastosAnuales: leerNumero('otrosGastosAnuales').toFixed(2),
     tinBonificado: tin.toFixed(2),
     plazoAnos: plazoAnos.toFixed(0),
     numPagas: numeroPagas.toFixed(0),

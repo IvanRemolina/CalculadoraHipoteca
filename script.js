@@ -237,7 +237,8 @@ function cargarDatosDesdePlanificador() {
   const parametros = new URLSearchParams(window.location.search);
   const campos = [
     'precioCompra', 'importeHipoteca', 'porcentajeImpuestos', 'gastosNotario',
-    'tasacion', 'socio', 'seguroVidaAnual', 'seguroHogarAnual', 'tinBonificado',
+    'gastosRegistro', 'gastosGestion', 'tasacion', 'verificacion', 'socio',
+    'seguroVidaAnual', 'seguroHogarAnual', 'otrosGastosAnuales', 'tinBonificado',
     'plazoAnos', 'numPagas', 'salarioMensual'
   ];
   campos.forEach((campo) => {
