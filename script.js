@@ -3,6 +3,14 @@ let cuotaSinBonificarGlobal = 0;
 
 function cambiarTema(claseTema) {
   document.body.className = claseTema;
+  localStorage.setItem('calculadoraTema', claseTema);
+}
+
+function cargarTema() {
+  const temaGuardado = localStorage.getItem('calculadoraTema') || 'theme-azul';
+  document.body.className = temaGuardado;
+  const selector = document.getElementById('themeSelect');
+  if (selector) selector.value = temaGuardado;
 }
 
 function actualizarDesdeMensual() {
@@ -249,6 +257,7 @@ function cargarDatosDesdePlanificador() {
 }
 
 window.onload = function() {
+  cargarTema();
   cargarDatosDesdePlanificador();
   actualizarDesdeMensual();
   calcular();

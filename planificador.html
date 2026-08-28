@@ -13,7 +13,17 @@
         <h1>Planificador de compra de vivienda</h1>
         <p class="intro-text">Calcula qué precio de vivienda encaja con tus ahorros y tu cuota mensual máxima.</p>
       </div>
-      <a class="btn-action link-button" href="index.html">Ir a la calculadora principal</a>
+      <div class="controls-container">
+        <label for="themeSelect">Tema:</label>
+        <select id="themeSelect" onchange="cambiarTema(this.value)">
+          <option value="theme-azul">Azul</option>
+          <option value="theme-verde">Verde</option>
+          <option value="theme-morado">Moradito</option>
+          <option value="theme-rojo">Rojo</option>
+          <option value="theme-amarillo">Amarillo</option>
+        </select>
+        <a class="btn-action link-button" href="index.html">Ir a la calculadora principal</a>
+      </div>
     </div>
 
     <div class="main-layout">

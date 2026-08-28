@@ -6,6 +6,17 @@ function formatearEuros(valor) {
   return valor.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 }
 
+function cambiarTema(claseTema) {
+  document.body.className = claseTema;
+  localStorage.setItem('calculadoraTema', claseTema);
+}
+
+function cargarTema() {
+  const temaGuardado = localStorage.getItem('calculadoraTema') || 'theme-azul';
+  document.body.className = temaGuardado;
+  document.getElementById('themeSelect').value = temaGuardado;
+}
+
 function calcularCuota(capital, tin, anos) {
   if (capital <= 0 || tin <= 0 || anos <= 0) return 0;
   const numeroCuotas = anos * 12;
@@ -126,4 +137,7 @@ function calcularPlanificacion() {
   }).toString();
 }
 
-window.onload = calcularPlanificacion;
+window.onload = function() {
+  cargarTema();
+  calcularPlanificacion();
+};
