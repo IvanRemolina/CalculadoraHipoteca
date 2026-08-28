@@ -81,6 +81,7 @@ function calcular() {
   const seguroHogar = parseFloat(document.getElementById('seguroHogarAnual').value) || 0;
   const otrosGastos = parseFloat(document.getElementById('otrosGastosAnuales').value) || 0;
   const mensualidadSeguros = (seguroVida + seguroHogar + otrosGastos) / 12;
+  const incluirGastosRecurrentes = document.getElementById('incluirGastosRecurrentes').checked;
   document.getElementById('mediaSegurosMensual').value = mensualidadSeguros.toFixed(2);
 
   const impuestosEuros = precioCompra * (porcentajeImpuestos / 100);
@@ -113,7 +114,26 @@ function calcular() {
   document.getElementById('resCuotaBonificada').innerText = cuotaBonificadaGlobal.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €/mes';
   document.getElementById('resCuotaTotalBonificada').innerText = (cuotaBonificadaGlobal + mensualidadSeguros).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €/mes';
   document.getElementById('resCuotaSinBonificar').innerText = cuotaSinBonificarGlobal.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €/mes';
+
+  const numeroCuotas = plazoAnos * 12;
+  const totalPagadoHipoteca = cuotaBonificadaGlobal * numeroCuotas;
+  const interesesTotales = Math.max(0, totalPagadoHipoteca - importeHipoteca);
+  const totalGastosRecurrentes = incluirGastosRecurrentes ? (seguroVida + seguroHogar + otrosGastos) * plazoAnos : 0;
+  const gastosCompraventaSinImpuestos = gastosNotario + gastosRegistro + gastosGestion;
+  const totalFinal = precioCompra + impuestosEuros + gastosCompraventaSinImpuestos + totalGastosHipoteca + interesesTotales + totalGastosRecurrentes;
+
+  document.getElementById('resCostePrecio').innerText = formatearEuros(precioCompra);
+  document.getElementById('resCosteImpuestos').innerText = formatearEuros(impuestosEuros);
+  document.getElementById('resCosteCompra').innerText = formatearEuros(gastosCompraventaSinImpuestos);
+  document.getElementById('resCosteHipoteca').innerText = formatearEuros(totalGastosHipoteca);
+  document.getElementById('resCosteIntereses').innerText = formatearEuros(interesesTotales);
+  document.getElementById('resCosteRecurrentes').innerText = formatearEuros(totalGastosRecurrentes);
+  document.getElementById('resCosteTotalFinal').innerText = formatearEuros(totalFinal);
   calcularEndeudamiento();
+}
+
+function formatearEuros(valor) {
+  return valor.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 }
 
 function calcularCuota(capital, tin, anos) {
@@ -193,6 +213,16 @@ function descargarTXT() {
 - % Endeudamiento (Solo Hipoteca): ${document.getElementById('pctEndeudamientoBonificado').innerText}
 - % Endeudamiento (Hipoteca + Seguros): ${document.getElementById('pctEndeudamientoTotal').innerText}
 - % Endeudamiento (Sin Bonificación): ${document.getElementById('pctEndeudamientoSinBonif').innerText}
+
+7. COSTE TOTAL AL FINALIZAR LA HIPOTECA
+------------------------------------------------
+- Precio de la vivienda: ${document.getElementById('resCostePrecio').innerText}
+- Impuestos: ${document.getElementById('resCosteImpuestos').innerText}
+- Gastos de compraventa: ${document.getElementById('resCosteCompra').innerText}
+- Gastos iniciales de hipoteca: ${document.getElementById('resCosteHipoteca').innerText}
+- Intereses de la hipoteca: ${document.getElementById('resCosteIntereses').innerText}
+- Seguros y gastos anuales: ${document.getElementById('resCosteRecurrentes').innerText}
+- TOTAL PAGADO AL FINALIZAR: ${document.getElementById('resCosteTotalFinal').innerText}
 ================================================`;
 
   const blob = new Blob([texto], { type: 'text/plain;charset=utf-8' });

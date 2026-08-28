@@ -117,6 +117,10 @@
           <label for="mediaSegurosMensual">Coste Adicional Mensual (€) [Calc.]</label>
           <input type="number" id="mediaSegurosMensual" readonly>
         </div>
+        <div class="form-group">
+          <label for="incluirGastosRecurrentes">Incluir gastos recurrentes en el total final</label>
+          <input type="checkbox" id="incluirGastosRecurrentes" checked onchange="calcular()">
+        </div>
       </div>
 
       <!-- 4. CUOTAS -->
@@ -168,6 +172,36 @@
         <div>
           <span>Cuota Hipoteca (SIN Bonificación):</span>
           <span id="resCuotaSinBonificar" style="font-weight: bold; color: red;">0.00 €</span>
+        </div>
+        <hr>
+        <h2>Coste total al finalizar la hipoteca</h2>
+        <div>
+          <span>Precio de la vivienda:</span>
+          <span id="resCostePrecio">0.00 €</span>
+        </div>
+        <div>
+          <span>Impuestos:</span>
+          <span id="resCosteImpuestos">0.00 €</span>
+        </div>
+        <div>
+          <span>Gastos de compraventa:</span>
+          <span id="resCosteCompra">0.00 €</span>
+        </div>
+        <div>
+          <span>Gastos iniciales de hipoteca:</span>
+          <span id="resCosteHipoteca">0.00 €</span>
+        </div>
+        <div>
+          <span>Intereses de la hipoteca:</span>
+          <span id="resCosteIntereses">0.00 €</span>
+        </div>
+        <div>
+          <span>Seguros y gastos anuales:</span>
+          <span id="resCosteRecurrentes">0.00 €</span>
+        </div>
+        <div class="highlight">
+          <span>Total pagado al finalizar:</span>
+          <span id="resCosteTotalFinal">0.00 €</span>
         </div>
       </div>
     </div>
