@@ -54,9 +54,8 @@ function calcularPrecioMaximo(porcentajeFinanciacion, incluirResultado) {
   const esfuerzo = Math.max(0, leerNumero('porcentajeEsfuerzo')) / 100;
   const tin = Math.max(0, leerNumero('tinBonificado'));
   const plazoAnos = Math.max(0, leerNumero('plazoAnos'));
-  const recurrentesMensuales = (leerNumero('seguroVidaAnual') + leerNumero('seguroHogarAnual') + leerNumero('otrosGastosAnuales')) / 12;
   const ingresoMensualReal = salarioMensual * numeroPagas / 12;
-  const cuotaMaxima = Math.max(0, ingresoMensualReal * esfuerzo - recurrentesMensuales);
+  const cuotaMaxima = Math.max(0, ingresoMensualReal * esfuerzo);
   const capitalMaximo = calcularCapitalDesdeCuota(cuotaMaxima, tin, plazoAnos);
   const limitePorCuota = capitalMaximo / porcentajeFinanciacion;
   const porcentajeNecesario = (1 - porcentajeFinanciacion) + porcentajeImpuestos;
@@ -93,7 +92,7 @@ function calcularPlanificacion() {
   const costeFijoInicial = gastosCompra + gastosHipoteca;
   const entradaYGastos = precioMaximo - hipoteca + precioMaximo * porcentajeImpuestos + costeFijoInicial;
   const cuota = calcularCuota(hipoteca, tin, plazoAnos);
-  const esfuerzoTotal = ingresoMensualReal > 0 ? ((cuota + segurosMensuales) / ingresoMensualReal) * 100 : 0;
+  const esfuerzoTotal = ingresoMensualReal > 0 ? (cuota / ingresoMensualReal) * 100 : 0;
   const limiteActivo = limitePorAhorros <= limitePorCuota ? 'tus ahorros' : 'el porcentaje de sueldo que quieres dedicar';
 
   document.getElementById('resAhorroDisponible').innerText = formatearEuros(Math.max(0, leerNumero('ahorroActual') - leerNumero('ahorroReserva')));
@@ -106,7 +105,7 @@ function calcularPlanificacion() {
   document.getElementById('resCuota').innerText = formatearEuros(cuota) + '/mes';
   document.getElementById('resSeguros').innerText = formatearEuros(segurosMensuales) + '/mes';
   document.getElementById('resEsfuerzo').innerText = esfuerzoTotal.toFixed(2) + ' %';
-  document.getElementById('resExplicacion').innerText = 'El límite lo marca ' + limiteActivo + '. Es una estimación y no sustituye el estudio del banco.';
+  document.getElementById('resExplicacion').innerText = 'El límite lo marca ' + limiteActivo + '. Los seguros son solo un apunte y no reducen la cuota máxima. Es una estimación y no sustituye el estudio del banco.';
   document.getElementById('usarEnPrincipal').href = 'index.html?' + new URLSearchParams({
     precioCompra: precioMaximo.toFixed(2),
     importeHipoteca: hipoteca.toFixed(2),

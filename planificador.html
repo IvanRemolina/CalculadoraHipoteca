@@ -88,16 +88,16 @@
             <label for="verificacion">Verificación registral (€)</label>
             <input type="number" id="verificacion" value="25" min="0" step="0.01" oninput="calcularPlanificacion()">
           </div>
-          <div class="form-group">
-            <label for="seguroVidaAnual">Seguro de vida anual (€)</label>
+          <div class="form-group planner-reference">
+            <label for="seguroVidaAnual">Seguro de vida anual (€) [Apunte]</label>
             <input type="number" id="seguroVidaAnual" value="95" min="0" step="0.01" oninput="calcularPlanificacion()">
           </div>
-          <div class="form-group">
-            <label for="seguroHogarAnual">Seguro de hogar anual (€)</label>
+          <div class="form-group planner-reference">
+            <label for="seguroHogarAnual">Seguro de hogar anual (€) [Apunte]</label>
             <input type="number" id="seguroHogarAnual" value="250" min="0" step="0.01" oninput="calcularPlanificacion()">
           </div>
-          <div class="form-group">
-            <label for="otrosGastosAnuales">Otros gastos anuales (€)</label>
+          <div class="form-group planner-reference">
+            <label for="otrosGastosAnuales">Otros gastos anuales (€) [Apunte]</label>
             <input type="number" id="otrosGastosAnuales" value="0" min="0" step="0.01" oninput="calcularPlanificacion()">
           </div>
         </div>
@@ -114,10 +114,10 @@
         <div class="res-line"><span>Hipoteca estimada:</span><strong id="resHipoteca">0,00 €</strong></div>
         <div class="res-line"><span>Entrada y gastos iniciales:</span><strong id="resAportacion">0,00 €</strong></div>
         <div class="res-line"><span>Cuota hipotecaria:</span><strong id="resCuota">0,00 €/mes</strong></div>
-        <div class="res-line"><span>Seguros mensuales:</span><strong id="resSeguros">0,00 €/mes</strong></div>
+        <div class="res-line"><span>Seguros mensuales [apunte]:</span><strong id="resSeguros">0,00 €/mes</strong></div>
         <div class="res-line"><span>Esfuerzo total:</span><strong id="resEsfuerzo">0,00 %</strong></div>
         <hr>
-        <div class="planner-note" id="resExplicacion">Introduce tus datos para ver el resultado.</div>
+        <div class="planner-note" id="resExplicacion">Los seguros son solo informativos y no se descuentan de la cuota máxima.</div>
         <a class="btn-action link-button planner-main-link" id="usarEnPrincipal" href="index.html">Usar resultado en calculadora principal</a>
       </aside>
     </div>

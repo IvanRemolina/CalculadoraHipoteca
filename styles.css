@@ -223,6 +223,10 @@ input[readonly] {
   color: #555;
 }
 
+.planner-reference {
+  opacity: 0.75;
+}
+
 .checkbox-label {
   display: flex;
   flex-direction: row;
