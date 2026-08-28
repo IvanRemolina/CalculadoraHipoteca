@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Simulación Hipotecaria</title>
+
+  <!-- LIBRERÍA PARA GENERAR PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-azul">
+
+<div class="container" id="contenido-pdf">
+  
+  <!-- CABECERA CON CONTROLES -->
+  <div class="header-bar">
+    <div>
+      <h1>Calculadora de Simulación Hipotecaria</h1>
+      <p style="font-size: 0.85rem; color: #666; margin: 3px 0 0 0;">Herramienta universal de análisis de Préstamos e Inversión</p>
+    </div>
+
+    <div class="controls-container" data-html2canvas-ignore="true">
+      <label for="themeSelect">🎨 Tema:</label>
+      <select id="themeSelect" onchange="cambiarTema(this.value)">
+        <option value="theme-azul" selected>Azul</option>
+        <option value="theme-verde">Verde</option>
+        <option value="theme-morado">Moradito</option>
+        <option value="theme-rojo">Rojo</option>
+        <option value="theme-amarillo">Amarillo</option>
+      </select>
+
+      <button class="btn-action" onclick="descargarPDF()">📄 Descargar PDF</button>
+      <button class="btn-action" onclick="descargarTXT()">📝 Descargar TXT</button>
+    </div>
+  </div>
+
+  <div class="main-layout">
+    
+    <!-- COLUMNA PRINCIPAL -->
+    <div>
+      <!-- 1. COMPRAVENTA -->
+      <h2>1. Datos de la Compraventa</h2>
+      <div class="grid">
+        <div class="form-group">
+          <label for="precioCompra">Precio Compraventa (€)</label>
+          <input type="number" id="precioCompra" value="120000" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="porcentajeImpuestos">Impuestos ITP (%)</label>
+          <input type="number" id="porcentajeImpuestos" value="6.0" step="0.1" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="gastosNotario">Notario Compraventa (€)</label>
+          <input type="number" id="gastosNotario" value="1000" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="gastosRegistro">Registro Compraventa (€)</label>
+          <input type="number" id="gastosRegistro" value="700" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="gastosGestion">Gestión Compraventa (€)</label>
+          <input type="number" id="gastosGestion" value="296.45" step="0.01" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="totalGastosCompra">Total Gastos Compra (€) [Calc.]</label>
+          <input type="number" id="totalGastosCompra" readonly>
+        </div>
+      </div>
+
+      <!-- 2. HIPOTECA -->
+      <h2>2. Condiciones de la Hipoteca</h2>
+      <div class="grid">
+        <div class="form-group">
+          <label for="importeHipoteca">Importe Hipoteca (€)</label>
+          <input type="number" id="importeHipoteca" value="100000" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="porcentajeFinanciacion">% Financiación real [Calc.]</label>
+          <input type="text" id="porcentajeFinanciacion" readonly>
+        </div>
+        <div class="form-group">
+          <label for="tasacion">Coste Tasación (€)</label>
+          <input type="number" id="tasacion" value="242" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="verificacion">Verificación Registral (€)</label>
+          <input type="number" id="verificacion" value="25" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="socio">Gastos/Aportación Inicial (€)</label>
+          <input type="number" id="socio" value="60.10" step="0.01" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="totalGastosHipoteca">Gastos Hipoteca Cliente (€) [Calc.]</label>
+          <input type="number" id="totalGastosHipoteca" readonly>
+        </div>
+      </div>
+
+      <!-- 3. SEGUROS -->
+      <h2>3. Seguros y Gastos Adicionales (Anuales)</h2>
+      <div class="grid">
+        <div class="form-group">
+          <label for="seguroVidaAnual">Seguro de Vida Anual (€)</label>
+          <input type="number" id="seguroVidaAnual" value="95" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="seguroHogarAnual">Seguro de Hogar Anual (€)</label>
+          <input type="number" id="seguroHogarAnual" value="250" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="otrosGastosAnuales">Otros Gastos Anuales (€)</label>
+          <input type="number" id="otrosGastosAnuales" value="0" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="mediaSegurosMensual">Coste Adicional Mensual (€) [Calc.]</label>
+          <input type="number" id="mediaSegurosMensual" readonly>
+        </div>
+      </div>
+
+      <!-- 4. CUOTAS -->
+      <h2>4. Simulación de Cuotas</h2>
+      <div class="grid">
+        <div class="form-group">
+          <label for="tinBonificado">TIN Bonificado (%)</label>
+          <input type="number" id="tinBonificado" value="3.40" step="0.01" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="tinSinBonificar">TIN Sin Bonificar (%)</label>
+          <input type="number" id="tinSinBonificar" value="4.40" step="0.01" oninput="calcular()">
+        </div>
+        <div class="form-group">
+          <label for="plazoAnos">Plazo (Años)</label>
+          <input type="number" id="plazoAnos" value="30" oninput="calcular()">
+        </div>
+      </div>
+
+      <!-- RESUMEN FINAL -->
+      <div class="results-card">
+        <div>
+          <span>Total Inversión (Compra + Gastos):</span>
+          <span id="resTotalInversion">0.00 €</span>
+        </div>
+        <div>
+          <span>Entrada requerida (No financiado):</span>
+          <span id="resEntrada">0.00 €</span>
+        </div>
+        <div>
+          <span>Total Gastos e Impuestos:</span>
+          <span id="resGastos">0.00 €</span>
+        </div>
+        <hr>
+        <div class="highlight">
+          <span>Desembolso Inicial (Fondos Propios):</span>
+          <span id="resFondosPropios">0.00 €</span>
+        </div>
+        <hr>
+        <div>
+          <span>Cuota Hipoteca (CON Bonificación):</span>
+          <span id="resCuotaBonificada" style="font-weight: bold; color: green;">0.00 €</span>
+        </div>
+        <div>
+          <span>Cuota Total Con Seguros (Bonificada):</span>
+          <span id="resCuotaTotalBonificada" style="font-weight: bold; color: var(--primary);">0.00 €</span>
+        </div>
+        <hr>
+        <div>
+          <span>Cuota Hipoteca (SIN Bonificación):</span>
+          <span id="resCuotaSinBonificar" style="font-weight: bold; color: red;">0.00 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA LATERAL -->
+    <div class="sidebar-card">
+      <h2 style="margin-top:0;">💼 Capacidad de Pago</h2>
+      
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label for="numPagas">Número de Pagas:</label>
+        <select id="numPagas" onchange="actualizarDesdeMensual()">
+          <option value="12">12 pagas</option>
+          <option value="14" selected>14 pagas</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label for="salarioMensual">Salario Neto Mensual (€):</label>
+        <input type="number" id="salarioMensual" value="1250" oninput="actualizarDesdeMensual()">
+      </div>
+
+      <div class="form-group" style="margin-bottom: 15px;">
+        <label for="salarioAnual">Salario Neto Anual (€):</label>
+        <input type="number" id="salarioAnual" value="17500" oninput="actualizarDesdeAnual()">
+      </div>
+
+      <div id="boxProrrateado" class="form-group" style="margin-bottom: 15px;">
+        <label for="salarioProrrateado">Mensual Prorrateado (12p) (€):</label>
+        <input type="number" id="salarioProrrateado" readonly>
+      </div>
+
+      <hr>
+
+      <h2 style="font-size: 1rem; margin-top: 10px;">📊 Nivel de Endeudamiento</h2>
+      
+      <div class="res-line">
+        <span>% Hipoteca (Bonificada):</span>
+        <span id="pctEndeudamientoBonificado" style="font-weight: bold;">0.00 %</span>
+      </div>
+
+      <div class="res-line">
+        <span>% Hipoteca + Seguros:</span>
+        <span id="pctEndeudamientoTotal" style="font-weight: bold; color: var(--primary);">0.00 %</span>
+      </div>
+
+      <div class="res-line">
+        <span>% Hipoteca (Sin Bonif.):</span>
+        <span id="pctEndeudamientoSinBonif" style="font-weight: bold;">0.00 %</span>
+      </div>
+
+      <div style="margin-top: 15px; font-size: 0.8rem; color: #555; background: #fff; padding: 8px; border-radius: 4px; border: 1px solid #e0e0e0;">
+        💡 <strong>Criterio bancario:</strong> El endeudamiento se evalúa sobre el <strong>ingreso mensual real prorrateado</strong>. Se recomienda que la carga total no supere el <strong>30% - 35%</strong>.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
