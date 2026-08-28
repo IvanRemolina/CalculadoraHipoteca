@@ -22,9 +22,52 @@ function calcularCapitalDesdeCuota(cuotaMaxima, tin, anos) {
   return cuotaMaxima * (1 - Math.pow(1 + interesMensual, -numeroCuotas)) / interesMensual;
 }
 
-function calcularPlanificacion() {
+function cambiarModoFinanciacion() {
+  const automatica = document.getElementById('financiacionAutomatica').checked;
+  document.getElementById('porcentajeFinanciacion').disabled = automatica;
+  calcularPlanificacion();
+}
+
+function obtenerPorcentajeFinanciacion() {
+  const porcentaje = Math.min(100, Math.max(1, leerNumero('porcentajeFinanciacion')));
+  if (!document.getElementById('financiacionAutomatica').checked) return porcentaje;
+
+  let mejorPorcentaje = porcentaje;
+  let mejorPrecio = 0;
+  for (let candidato = 50; candidato <= 95; candidato += 0.1) {
+    const precio = calcularPrecioMaximo(candidato / 100, false);
+    if (precio > mejorPrecio) {
+      mejorPrecio = precio;
+      mejorPorcentaje = candidato;
+    }
+  }
+  document.getElementById('porcentajeFinanciacion').value = mejorPorcentaje.toFixed(1);
+  return mejorPorcentaje;
+}
+
+function calcularPrecioMaximo(porcentajeFinanciacion, incluirResultado) {
   const ahorroDisponible = Math.max(0, leerNumero('ahorroActual') - leerNumero('ahorroReserva'));
-  const porcentajeFinanciacion = Math.min(100, Math.max(1, leerNumero('porcentajeFinanciacion'))) / 100;
+  const porcentajeImpuestos = Math.max(0, leerNumero('porcentajeImpuestos')) / 100;
+  const gastosFijos = Math.max(0, leerNumero('gastosCompra')) + Math.max(0, leerNumero('gastosHipoteca')) + Math.max(0, leerNumero('otrosGastosIniciales'));
+  const salarioMensual = Math.max(0, leerNumero('salarioMensual'));
+  const numeroPagas = Math.max(1, leerNumero('numeroPagas'));
+  const esfuerzo = Math.max(0, leerNumero('porcentajeEsfuerzo')) / 100;
+  const tin = Math.max(0, leerNumero('tinBonificado'));
+  const plazoAnos = Math.max(0, leerNumero('plazoAnos'));
+  const recurrentesMensuales = Math.max(0, leerNumero('gastosRecurrentes')) / 12;
+  const ingresoMensualReal = salarioMensual * numeroPagas / 12;
+  const cuotaMaxima = Math.max(0, ingresoMensualReal * esfuerzo - recurrentesMensuales);
+  const capitalMaximo = calcularCapitalDesdeCuota(cuotaMaxima, tin, plazoAnos);
+  const limitePorCuota = capitalMaximo / porcentajeFinanciacion;
+  const porcentajeNecesario = (1 - porcentajeFinanciacion) + porcentajeImpuestos;
+  const limitePorAhorros = porcentajeNecesario > 0 ? Math.max(0, (ahorroDisponible - gastosFijos) / porcentajeNecesario) : 0;
+  const precio = Math.min(limitePorAhorros, limitePorCuota);
+  if (incluirResultado) return { precio, limitePorAhorros, limitePorCuota };
+  return precio;
+}
+
+function calcularPlanificacion() {
+  const porcentajeFinanciacion = obtenerPorcentajeFinanciacion() / 100;
   const porcentajeImpuestos = Math.max(0, leerNumero('porcentajeImpuestos')) / 100;
   const gastosCompra = Math.max(0, leerNumero('gastosCompra'));
   const gastosHipoteca = Math.max(0, leerNumero('gastosHipoteca'));
@@ -38,18 +81,12 @@ function calcularPlanificacion() {
 
   const ingresoMensualReal = salarioMensual * numeroPagas / 12;
   const segurosMensuales = gastosRecurrentesAnuales / 12;
-  const cuotaMaximaTotal = ingresoMensualReal * porcentajeEsfuerzo;
-  const cuotaHipotecaMaxima = Math.max(0, cuotaMaximaTotal - segurosMensuales);
-  const capitalPorCuota = calcularCapitalDesdeCuota(cuotaHipotecaMaxima, tin, plazoAnos);
-  const limitePorCuota = porcentajeFinanciacion > 0 ? capitalPorCuota / porcentajeFinanciacion : 0;
-
-  const costeFijoInicial = gastosCompra + gastosHipoteca + otrosGastosIniciales;
-  const porcentajeNecesarioPorPrecio = (1 - porcentajeFinanciacion) + porcentajeImpuestos;
-  const limitePorAhorros = porcentajeNecesarioPorPrecio > 0
-    ? Math.max(0, (ahorroDisponible - costeFijoInicial) / porcentajeNecesarioPorPrecio)
-    : 0;
-  const precioMaximo = Math.min(limitePorAhorros, limitePorCuota);
+  const limites = calcularPrecioMaximo(porcentajeFinanciacion, true);
+  const limitePorAhorros = limites.limitePorAhorros;
+  const limitePorCuota = limites.limitePorCuota;
+  const precioMaximo = limites.precio;
   const hipoteca = precioMaximo * porcentajeFinanciacion;
+  const costeFijoInicial = gastosCompra + gastosHipoteca + otrosGastosIniciales;
   const entradaYGastos = precioMaximo - hipoteca + precioMaximo * porcentajeImpuestos + costeFijoInicial;
   const cuota = calcularCuota(hipoteca, tin, plazoAnos);
   const esfuerzoTotal = ingresoMensualReal > 0 ? ((cuota + segurosMensuales) / ingresoMensualReal) * 100 : 0;
@@ -64,6 +101,22 @@ function calcularPlanificacion() {
   document.getElementById('resSeguros').innerText = formatearEuros(segurosMensuales) + '/mes';
   document.getElementById('resEsfuerzo').innerText = esfuerzoTotal.toFixed(2) + ' %';
   document.getElementById('resExplicacion').innerText = 'El límite lo marca ' + limiteActivo + '. Es una estimación y no sustituye el estudio del banco.';
+  document.getElementById('usarEnPrincipal').href = 'index.html?' + new URLSearchParams({
+    precioCompra: precioMaximo.toFixed(2),
+    importeHipoteca: hipoteca.toFixed(2),
+    porcentajeImpuestos: (porcentajeImpuestos * 100).toFixed(2),
+    gastosNotario: '0',
+    gastosRegistro: '0',
+    gastosGestion: gastosCompra.toFixed(2),
+    tasacion: gastosHipoteca.toFixed(2),
+    socio: otrosGastosIniciales.toFixed(2),
+    seguroVidaAnual: '0',
+    seguroHogarAnual: gastosRecurrentesAnuales.toFixed(2),
+    tinBonificado: tin.toFixed(2),
+    plazoAnos: plazoAnos.toFixed(0),
+    numPagas: numeroPagas.toFixed(0),
+    salarioMensual: salarioMensual.toFixed(2)
+  }).toString();
 }
 
 window.onload = calcularPlanificacion;

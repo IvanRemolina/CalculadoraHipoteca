@@ -10,6 +10,8 @@ Calculadora personal para simular los gastos de compra de una vivienda, la cuota
 - `planificador.html`: cálculo inverso del precio máximo según ahorros e ingresos.
 - `planificador.js`: lógica del planificador.
 
+El planificador permite fijar manualmente el porcentaje financiado o activar el cálculo automático. En modo automático prueba porcentajes entre el 50% y el 95% y elige el que permite el mayor precio de vivienda compatible con los ahorros y la cuota máxima. El botón **Usar resultado en calculadora principal** transfiere el escenario mediante la URL.
+
 ## Publicarla en la web con GitHub Pages
 
 1. Sube los cambios al repositorio de GitHub en la rama `main`.

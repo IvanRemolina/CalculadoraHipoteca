@@ -223,6 +223,24 @@ input[readonly] {
   color: #555;
 }
 
+.checkbox-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-weight: normal;
+}
+
+.checkbox-label input {
+  width: auto;
+}
+
+.planner-main-link {
+  margin-top: 15px;
+  text-align: center;
+}
+
 @media (max-width: 500px) {
   body {
     padding: 10px;

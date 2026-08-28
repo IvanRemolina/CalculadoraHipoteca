@@ -233,7 +233,22 @@ function descargarTXT() {
   URL.revokeObjectURL(enlace.href);
 }
 
+function cargarDatosDesdePlanificador() {
+  const parametros = new URLSearchParams(window.location.search);
+  const campos = [
+    'precioCompra', 'importeHipoteca', 'porcentajeImpuestos', 'gastosNotario',
+    'tasacion', 'socio', 'seguroVidaAnual', 'seguroHogarAnual', 'tinBonificado',
+    'plazoAnos', 'numPagas', 'salarioMensual'
+  ];
+  campos.forEach((campo) => {
+    const valor = parametros.get(campo);
+    const elemento = document.getElementById(campo);
+    if (valor !== null && elemento) elemento.value = valor;
+  });
+}
+
 window.onload = function() {
+  cargarDatosDesdePlanificador();
   actualizarDesdeMensual();
   calcular();
 };
