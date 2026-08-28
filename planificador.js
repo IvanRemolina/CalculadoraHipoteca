@@ -48,7 +48,7 @@ function obtenerPorcentajeFinanciacion() {
 function calcularPrecioMaximo(porcentajeFinanciacion, incluirResultado) {
   const ahorroDisponible = Math.max(0, leerNumero('ahorroActual') - leerNumero('ahorroReserva'));
   const porcentajeImpuestos = Math.max(0, leerNumero('porcentajeImpuestos')) / 100;
-  const gastosFijos = Math.max(0, leerNumero('gastosCompra')) + Math.max(0, leerNumero('gastosHipoteca')) + Math.max(0, leerNumero('otrosGastosIniciales'));
+  const gastosFijos = Math.max(0, leerNumero('gastosCompra')) + Math.max(0, leerNumero('gastosHipoteca'));
   const salarioMensual = Math.max(0, leerNumero('salarioMensual'));
   const numeroPagas = Math.max(1, leerNumero('numeroPagas'));
   const esfuerzo = Math.max(0, leerNumero('porcentajeEsfuerzo')) / 100;
@@ -71,7 +71,6 @@ function calcularPlanificacion() {
   const porcentajeImpuestos = Math.max(0, leerNumero('porcentajeImpuestos')) / 100;
   const gastosCompra = Math.max(0, leerNumero('gastosCompra'));
   const gastosHipoteca = Math.max(0, leerNumero('gastosHipoteca'));
-  const otrosGastosIniciales = Math.max(0, leerNumero('otrosGastosIniciales'));
   const salarioMensual = Math.max(0, leerNumero('salarioMensual'));
   const numeroPagas = Math.max(1, leerNumero('numeroPagas'));
   const porcentajeEsfuerzo = Math.max(0, leerNumero('porcentajeEsfuerzo')) / 100;
@@ -86,12 +85,14 @@ function calcularPlanificacion() {
   const limitePorCuota = limites.limitePorCuota;
   const precioMaximo = limites.precio;
   const hipoteca = precioMaximo * porcentajeFinanciacion;
-  const costeFijoInicial = gastosCompra + gastosHipoteca + otrosGastosIniciales;
+  const costeFijoInicial = gastosCompra + gastosHipoteca;
   const entradaYGastos = precioMaximo - hipoteca + precioMaximo * porcentajeImpuestos + costeFijoInicial;
   const cuota = calcularCuota(hipoteca, tin, plazoAnos);
   const esfuerzoTotal = ingresoMensualReal > 0 ? ((cuota + segurosMensuales) / ingresoMensualReal) * 100 : 0;
   const limiteActivo = limitePorAhorros <= limitePorCuota ? 'tus ahorros' : 'el porcentaje de sueldo que quieres dedicar';
 
+  document.getElementById('resAhorroDisponible').innerText = formatearEuros(Math.max(0, leerNumero('ahorroActual') - leerNumero('ahorroReserva')));
+  document.getElementById('resGastosIniciales').innerText = formatearEuros(costeFijoInicial);
   document.getElementById('resLimiteAhorros').innerText = formatearEuros(limitePorAhorros);
   document.getElementById('resLimiteCuota').innerText = formatearEuros(limitePorCuota);
   document.getElementById('resPrecioMaximo').innerText = formatearEuros(precioMaximo);
@@ -109,7 +110,7 @@ function calcularPlanificacion() {
     gastosRegistro: '0',
     gastosGestion: gastosCompra.toFixed(2),
     tasacion: gastosHipoteca.toFixed(2),
-    socio: otrosGastosIniciales.toFixed(2),
+    socio: '0',
     seguroVidaAnual: '0',
     seguroHogarAnual: gastosRecurrentesAnuales.toFixed(2),
     tinBonificado: tin.toFixed(2),

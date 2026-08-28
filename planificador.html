@@ -26,7 +26,7 @@
           </div>
           <div class="form-group">
             <label for="ahorroReserva">Ahorro que quieres conservar (€)</label>
-            <input type="number" id="ahorroReserva" value="5000" min="0" oninput="calcularPlanificacion()">
+            <input type="number" id="ahorroReserva" value="0" min="0" oninput="calcularPlanificacion()">
           </div>
           <div class="form-group">
             <label for="porcentajeFinanciacion">Porcentaje a financiar (%)</label>
@@ -77,10 +77,6 @@
             <input type="number" id="gastosHipoteca" value="267" min="0" step="0.01" oninput="calcularPlanificacion()">
           </div>
           <div class="form-group">
-            <label for="otrosGastosIniciales">Otros gastos iniciales (€)</label>
-            <input type="number" id="otrosGastosIniciales" value="60.10" min="0" step="0.01" oninput="calcularPlanificacion()">
-          </div>
-          <div class="form-group">
             <label for="gastosRecurrentes">Seguros y otros gastos anuales (€)</label>
             <input type="number" id="gastosRecurrentes" value="345" min="0" step="0.01" oninput="calcularPlanificacion()">
           </div>
@@ -89,6 +85,8 @@
 
       <aside class="sidebar-card planner-results">
         <h2 style="margin-top:0;">Resultado orientativo</h2>
+        <div class="res-line"><span>Ahorro disponible:</span><strong id="resAhorroDisponible">0,00 €</strong></div>
+        <div class="res-line"><span>Gastos iniciales considerados:</span><strong id="resGastosIniciales">0,00 €</strong></div>
         <div class="res-line"><span>Límite por ahorros:</span><strong id="resLimiteAhorros">0,00 €</strong></div>
         <div class="res-line"><span>Límite por cuota:</span><strong id="resLimiteCuota">0,00 €</strong></div>
         <div class="res-line"><span>Precio máximo recomendado:</span><strong id="resPrecioMaximo" class="highlight">0,00 €</strong></div>
