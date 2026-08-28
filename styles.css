@@ -201,3 +201,42 @@ input[readonly] {
   color: #c62828;
   font-weight: bold;
 }
+
+.link-button {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.intro-text {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 3px 0 0;
+}
+
+.planner-results {
+  align-self: start;
+}
+
+.planner-note {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #555;
+}
+
+@media (max-width: 500px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .header-bar {
+    gap: 15px;
+  }
+
+  .controls-container {
+    flex-wrap: wrap;
+  }
+}

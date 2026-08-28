@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planificador de compra de vivienda</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-azul">
+  <main class="container planner-container">
+    <div class="header-bar">
+      <div>
+        <h1>Planificador de compra de vivienda</h1>
+        <p class="intro-text">Calcula qué precio de vivienda encaja con tus ahorros y tu cuota mensual máxima.</p>
+      </div>
+      <a class="btn-action link-button" href="index.html">Ir a la calculadora principal</a>
+    </div>
+
+    <div class="main-layout">
+      <div>
+        <h2>1. Tus ahorros</h2>
+        <div class="grid">
+          <div class="form-group">
+            <label for="ahorroActual">Ahorro actual (€)</label>
+            <input type="number" id="ahorroActual" value="40000" min="0" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="ahorroReserva">Ahorro que quieres conservar (€)</label>
+            <input type="number" id="ahorroReserva" value="5000" min="0" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="porcentajeFinanciacion">Porcentaje a financiar (%)</label>
+            <input type="number" id="porcentajeFinanciacion" value="80" min="1" max="100" step="0.1" oninput="calcularPlanificacion()">
+          </div>
+        </div>
+
+        <h2>2. Tus ingresos y límite mensual</h2>
+        <div class="grid">
+          <div class="form-group">
+            <label for="salarioMensual">Salario neto mensual (€)</label>
+            <input type="number" id="salarioMensual" value="1250" min="0" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="numeroPagas">Número de pagas</label>
+            <select id="numeroPagas" onchange="calcularPlanificacion()">
+              <option value="12">12 pagas</option>
+              <option value="14" selected>14 pagas</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="porcentajeEsfuerzo">Porcentaje máximo del sueldo (%)</label>
+            <input type="number" id="porcentajeEsfuerzo" value="33" min="1" max="100" step="0.1" oninput="calcularPlanificacion()">
+          </div>
+        </div>
+
+        <h2>3. Condiciones y gastos</h2>
+        <div class="grid">
+          <div class="form-group">
+            <label for="tinBonificado">TIN bonificado (%)</label>
+            <input type="number" id="tinBonificado" value="3.40" min="0" step="0.01" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="plazoAnos">Plazo (años)</label>
+            <input type="number" id="plazoAnos" value="30" min="1" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="porcentajeImpuestos">Impuestos ITP (%)</label>
+            <input type="number" id="porcentajeImpuestos" value="6" min="0" step="0.1" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="gastosCompra">Notario, registro y gestión (€)</label>
+            <input type="number" id="gastosCompra" value="1996.45" min="0" step="0.01" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="gastosHipoteca">Tasación y verificación (€)</label>
+            <input type="number" id="gastosHipoteca" value="267" min="0" step="0.01" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="otrosGastosIniciales">Otros gastos iniciales (€)</label>
+            <input type="number" id="otrosGastosIniciales" value="60.10" min="0" step="0.01" oninput="calcularPlanificacion()">
+          </div>
+          <div class="form-group">
+            <label for="gastosRecurrentes">Seguros y otros gastos anuales (€)</label>
+            <input type="number" id="gastosRecurrentes" value="345" min="0" step="0.01" oninput="calcularPlanificacion()">
+          </div>
+        </div>
+      </div>
+
+      <aside class="sidebar-card planner-results">
+        <h2 style="margin-top:0;">Resultado orientativo</h2>
+        <div class="res-line"><span>Límite por ahorros:</span><strong id="resLimiteAhorros">0,00 €</strong></div>
+        <div class="res-line"><span>Límite por cuota:</span><strong id="resLimiteCuota">0,00 €</strong></div>
+        <div class="res-line"><span>Precio máximo recomendado:</span><strong id="resPrecioMaximo" class="highlight">0,00 €</strong></div>
+        <hr>
+        <div class="res-line"><span>Hipoteca estimada:</span><strong id="resHipoteca">0,00 €</strong></div>
+        <div class="res-line"><span>Entrada y gastos iniciales:</span><strong id="resAportacion">0,00 €</strong></div>
+        <div class="res-line"><span>Cuota hipotecaria:</span><strong id="resCuota">0,00 €/mes</strong></div>
+        <div class="res-line"><span>Seguros mensuales:</span><strong id="resSeguros">0,00 €/mes</strong></div>
+        <div class="res-line"><span>Esfuerzo total:</span><strong id="resEsfuerzo">0,00 %</strong></div>
+        <hr>
+        <div class="planner-note" id="resExplicacion">Introduce tus datos para ver el resultado.</div>
+      </aside>
+    </div>
+  </main>
+  <script src="planificador.js"></script>
+</body>
+</html>

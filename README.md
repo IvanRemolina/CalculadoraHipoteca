@@ -7,6 +7,8 @@ Calculadora personal para simular los gastos de compra de una vivienda, la cuota
 - `index.html`: estructura de la calculadora.
 - `styles.css`: estilos y temas visuales.
 - `script.js`: cálculos y acciones de descarga.
+- `planificador.html`: cálculo inverso del precio máximo según ahorros e ingresos.
+- `planificador.js`: lógica del planificador.
 
 ## Publicarla en la web con GitHub Pages
 
